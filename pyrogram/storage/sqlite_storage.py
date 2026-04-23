@@ -1,17 +1,12 @@
-import base64
+
 import inspect
-import logging
 import sqlite3
-import struct
 import time
-from pathlib import Path
-from typing import Any, List, Optional, Tuple
+from typing import List, Tuple, Any
 
 from pyrogram import raw
 from .storage import Storage
 from .. import utils
-
-log = logging.getLogger(__name__)
 
 SCHEMA = """
 CREATE TABLE sessions
@@ -104,26 +99,11 @@ def get_input_peer(peer_id: int, access_hash: int, peer_type: str):
 class SQLiteStorage(Storage):
     VERSION = 4
     USERNAME_TTL = 8 * 60 * 60
-    FILE_EXTENSION = ".session"
 
-    def __init__(
-        self,
-        name: str,
-        workdir: Optional[Path] = None,
-        session_string: Optional[str] = None,
-        in_memory: Optional[bool] = False,
-    ):
+    def __init__(self, name: str):
         super().__init__(name)
 
         self.conn = None
-        self.workdir = workdir
-        self.session_string = session_string
-        self.in_memory = bool(in_memory)
-
-        if self.in_memory or self.workdir is None:
-            self.database = ":memory:"
-        else:
-            self.database = workdir / (self.name + self.FILE_EXTENSION)
 
     def create(self):
         with self.conn:
@@ -141,68 +121,7 @@ class SQLiteStorage(Storage):
             )
 
     async def open(self):
-        if self.in_memory or self.database == ":memory:":
-            self.conn = sqlite3.connect(":memory:", timeout=1, check_same_thread=False)
-            self.create()
-
-            if self.session_string:
-                if len(self.session_string) in [
-                    self.SESSION_STRING_SIZE,
-                    self.SESSION_STRING_SIZE_64,
-                ]:
-                    dc_id, test_mode, auth_key, user_id, is_bot = struct.unpack(
-                        (
-                            self.OLD_SESSION_STRING_FORMAT
-                            if len(self.session_string) == self.SESSION_STRING_SIZE
-                            else self.OLD_SESSION_STRING_FORMAT_64
-                        ),
-                        base64.urlsafe_b64decode(
-                            self.session_string + "=" * (-len(self.session_string) % 4)
-                        ),
-                    )
-
-                    await self.dc_id(dc_id)
-                    await self.test_mode(test_mode)
-                    await self.auth_key(auth_key)
-                    await self.user_id(user_id)
-                    await self.is_bot(is_bot)
-                    await self.date(0)
-
-                    log.warning(
-                        "You are using an old session string format. Use export_session_string to update"
-                    )
-                    return
-
-                dc_id, api_id, test_mode, auth_key, user_id, is_bot = struct.unpack(
-                    self.SESSION_STRING_FORMAT,
-                    base64.urlsafe_b64decode(
-                        self.session_string + "=" * (-len(self.session_string) % 4)
-                    ),
-                )
-
-                await self.dc_id(dc_id)
-                await self.api_id(api_id)
-                await self.test_mode(test_mode)
-                await self.auth_key(auth_key)
-                await self.user_id(user_id)
-                await self.is_bot(is_bot)
-                await self.date(0)
-
-            return
-
-        path = self.database
-        file_exists = isinstance(path, Path) and path.is_file()
-
-        self.conn = sqlite3.connect(str(path), timeout=1, check_same_thread=False)
-
-        if not file_exists:
-            self.create()
-        else:
-            with self.conn:
-                self.conn.executescript(UNAME_SCHEMA)
-
-        with self.conn:
-            self.conn.execute("VACUUM")
+        raise NotImplementedError
 
     async def save(self):
         await self.date(int(time.time()))
@@ -212,12 +131,7 @@ class SQLiteStorage(Storage):
         self.conn.close()
 
     async def delete(self):
-        if self.in_memory or self.database == ":memory:":
-            return
-        try:
-            Path(self.database).unlink()
-        except FileNotFoundError:
-            pass
+        raise NotImplementedError
 
     async def update_peers(self, peers: List[Tuple[int, int, str, str, str]]):
         self.conn.executemany(
@@ -292,7 +206,7 @@ class SQLiteStorage(Storage):
                 raise KeyError(f"Username not found: {username}")
             if abs(time.time() - r2[1]) > self.USERNAME_TTL:
                 raise KeyError(f"Username expired: {username}")
-            r = self.conn.execute(
+            r = r = self.conn.execute(
                 "SELECT id, access_hash, type, last_update_on FROM peers WHERE id = ?"
                 "ORDER BY last_update_on DESC",
                 (r2[0],)
