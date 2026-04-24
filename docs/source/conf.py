@@ -50,12 +50,14 @@ autodoc_typehints = "none"
 
 autodoc_default_options = {
     "members": True,
-    "undoc-members": True,
+    "undoc-members": False,
     "show-inheritance": True,
     "member-order": "bysource",
+    "no-index": False,
 }
 
 autodoc_inherit_docstrings = True
+autodoc_class_signature = "separated"
 
 autodoc_mock_imports = [
     "socks", "pyaes", "pymediainfo", "cryptg", "tgcrypto",
@@ -73,12 +75,34 @@ highlight_language = "python3"
 copybutton_prompt_text = "$ "
 
 suppress_warnings = [
-    "image.not_readable", "ref.doc", "ref.any", "ref.meth", "ref.class",
-    "ref.func", "ref.python", "toctree.excluded", "toctree.included",
-    "app.add_directive", "app.add_node", "duplicate", "docutils",
+    "image.not_readable",
+    "ref.doc",
+    "ref.any",
+    "ref.meth",
+    "ref.class",
+    "ref.func",
+    "ref.python",
+    "toctree.excluded",
+    "toctree.included",
+    "toctree.not_included",
+    "app.add_directive",
+    "app.add_node",
+    "duplicate",
+    "docutils",
+    "toc.not_included",
 ]
 
 nitpicky = False
+nitpick_ignore = [
+    ("py:obj", "types"),
+    ("py:class", "types"),
+    ("py:func", "types"),
+    ("py:meth", "types"),
+    ("py:attr", "types"),
+    ("py:class", "object"),
+    ("py:class", "type"),
+    ("py:obj", "object"),
+]
 
 html_title = f"Irenogram {version}"
 html_theme = "furo"
