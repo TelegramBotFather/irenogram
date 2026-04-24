@@ -103,6 +103,26 @@
     }
 }
 
+@keyframes iconFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+@keyframes iconPulseWarning {
+    0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 0px currentColor);
+    }
+    50% {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 8px currentColor);
+    }
+}
+
 :root {
     --border-radius: 0.5em;
     --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
@@ -286,23 +306,97 @@ p code.xref.literal {
 }
 
 .admonition {
-    border-radius: var(--border-radius);
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    border-radius: 12px;
     font-size: var(--font-size--normal);
-    border-left: 4px solid var(--color-admonition-border);
-    border-top: 1px solid var(--color-admonition-border);
-    border-right: 1px solid var(--color-admonition-border);
-    border-bottom: 1px solid var(--color-admonition-border);
-    background: linear-gradient(135deg, var(--color-admonition-title-background) 0%, rgba(0,0,0,0.02) 100%);
-    backdrop-filter: blur(8px);
+    padding: 16px 18px;
     transition: all var(--transition-normal);
     animation: fadeInUp 0.6s ease-out;
-    padding: 16px;
+    position: relative;
+    overflow: hidden;
+    border-left: 4px solid var(--color-admonition-border);
+}
+
+.admonition::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.1), transparent);
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+    pointer-events: none;
+}
+
+.admonition:hover::before {
+    opacity: 1;
 }
 
 .admonition:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 32px var(--color-admonition-border);
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 15px 40px var(--color-admonition-border);
     border-left-width: 5px;
+}
+
+.admonition.note {
+    background: linear-gradient(145deg, #fff8f3, #ffe8dc);
+    color: #5a2c1a;
+    border-left-color: #ff9966;
+}
+
+body[data-theme="dark"] .admonition.note {
+    background: linear-gradient(145deg, #3d2817, #2a1810);
+    color: #ffb88c;
+    border-left-color: #ff7a44;
+}
+
+.admonition.seealso {
+    background: linear-gradient(145deg, #fff8f3, #ffe8dc);
+    color: #5a2c1a;
+    border-left-color: #ff9966;
+}
+
+body[data-theme="dark"] .admonition.seealso {
+    background: linear-gradient(145deg, #3d2817, #2a1810);
+    color: #ffb88c;
+    border-left-color: #ff7a44;
+}
+
+.admonition.tip {
+    background: linear-gradient(145deg, #f0fdf4, #dcfce7);
+    color: #15803d;
+    border-left-color: #34d399;
+}
+
+body[data-theme="dark"] .admonition.tip {
+    background: linear-gradient(145deg, #064e3b, #022c1a);
+    color: #6ee7b7;
+    border-left-color: #10b981;
+}
+
+.admonition.warning {
+    background: linear-gradient(145deg, #fffbeb, #fef3c7);
+    color: #92400e;
+    border-left-color: #fbbf24;
+}
+
+body[data-theme="dark"] .admonition.warning {
+    background: linear-gradient(145deg, #422006, #3f1f08);
+    color: #fcd34d;
+    border-left-color: #f59e0b;
+}
+
+.admonition.danger {
+    background: linear-gradient(145deg, #fef2f2, #fee2e2);
+    color: #7f1d1d;
+    border-left-color: #f87171;
+}
+
+body[data-theme="dark"] .admonition.danger {
+    background: linear-gradient(145deg, #3f0f0f, #2a0a0a);
+    color: #fca5a5;
+    border-left-color: #ef4444;
 }
 
 p.admonition-title {
@@ -311,41 +405,85 @@ p.admonition-title {
     display: flex;
     align-items: center;
     gap: 12px;
-    color: var(--color-admonition-title);
     margin-top: 0;
     margin-bottom: 8px;
+    width: 100%;
 }
 
 p.admonition-title:before {
     content: '';
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     height: 24px;
     width: 24px;
     flex-shrink: 0;
-    animation: iconBounce 2s ease-in-out infinite;
+    font-size: 18px;
+    animation: iconFloat 2s ease-in-out infinite;
 }
 
 .admonition.note p.admonition-title:before {
-    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23ff9966" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>') center/contain no-repeat;
+    content: '!';
+    color: #ff9966;
+    font-weight: 900;
+    font-family: serif;
+}
+
+body[data-theme="dark"] .admonition.note p.admonition-title:before {
+    color: #ff7a44;
 }
 
 .admonition.seealso p.admonition-title:before {
-    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23ff9966" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>') center/contain no-repeat;
+    content: '👁️';
+    animation: iconFloat 1.8s ease-in-out infinite;
 }
 
 .admonition.tip p.admonition-title:before {
-    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%2334d399" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-4m14 6v-3.87a3.37 3.37 0 0 0-5.15-3.44L9 9"/><circle cx="9" cy="9" r="1"/></svg>') center/contain no-repeat;
-    animation: iconBounce 1.5s ease-in-out infinite;
+    content: '💡';
+    animation: iconFloat 1.5s ease-in-out infinite;
 }
 
 .admonition.warning p.admonition-title:before {
-    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23fbbf24" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3.05h16.94a2 2 0 0 0 1.71-3.05L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>') center/contain no-repeat;
-    animation: iconPulseGlow 2s ease-in-out infinite;
+    content: '⚠️';
+    animation: iconPulseWarning 1.5s ease-in-out infinite;
 }
 
 .admonition.danger p.admonition-title:before {
-    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23f87171" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>') center/contain no-repeat;
-    animation: iconPulseGlow 1.5s ease-in-out infinite;
+    content: '🔥';
+    animation: iconFloat 1.5s ease-in-out infinite;
+}
+
+.admonition-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.admonition p {
+    margin: 4px 0 0 0;
+    line-height: 1.5;
+}
+
+.admonition p:first-of-type {
+    margin-top: 0;
+    font-weight: 500;
+}
+
+.admonition p code {
+    background: rgba(0,0,0,0.15);
+    padding: 3px 7px;
+    border-radius: 6px;
+    font-family: "Ubuntu Mono", monospace;
+    font-size: 0.9em;
+}
+
+.admonition.note p code {
+    background: rgba(255, 153, 102, 0.2);
+    color: #d97706;
+}
+
+body[data-theme="dark"] .admonition.note p code {
+    background: rgba(255, 122, 68, 0.2);
+    color: #fbbf24;
 }
 
 .admonition > *:last-child {
