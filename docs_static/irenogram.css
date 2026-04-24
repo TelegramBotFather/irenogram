@@ -306,9 +306,6 @@ p code.xref.literal {
 }
 
 .admonition {
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
     border-radius: 12px;
     font-size: var(--font-size--normal);
     padding: 16px 18px;
@@ -334,80 +331,72 @@ p code.xref.literal {
 }
 
 .admonition:hover {
-    transform: translateY(-4px) scale(1.01);
+    transform: translateY(-4px);
     box-shadow: 0 15px 40px var(--color-admonition-border);
     border-left-width: 5px;
 }
 
 .admonition.note {
     background: linear-gradient(145deg, #fff8f3, #ffe8dc);
-    color: #5a2c1a;
     border-left-color: #ff9966;
 }
 
 body[data-theme="dark"] .admonition.note {
     background: linear-gradient(145deg, #3d2817, #2a1810);
-    color: #ffb88c;
     border-left-color: #ff7a44;
 }
 
 .admonition.seealso {
     background: linear-gradient(145deg, #fff8f3, #ffe8dc);
-    color: #5a2c1a;
     border-left-color: #ff9966;
 }
 
 body[data-theme="dark"] .admonition.seealso {
     background: linear-gradient(145deg, #3d2817, #2a1810);
-    color: #ffb88c;
     border-left-color: #ff7a44;
 }
 
 .admonition.tip {
     background: linear-gradient(145deg, #f0fdf4, #dcfce7);
-    color: #15803d;
     border-left-color: #34d399;
 }
 
 body[data-theme="dark"] .admonition.tip {
     background: linear-gradient(145deg, #064e3b, #022c1a);
-    color: #6ee7b7;
     border-left-color: #10b981;
 }
 
 .admonition.warning {
     background: linear-gradient(145deg, #fffbeb, #fef3c7);
-    color: #92400e;
     border-left-color: #fbbf24;
 }
 
 body[data-theme="dark"] .admonition.warning {
     background: linear-gradient(145deg, #422006, #3f1f08);
-    color: #fcd34d;
     border-left-color: #f59e0b;
 }
 
 .admonition.danger {
     background: linear-gradient(145deg, #fef2f2, #fee2e2);
-    color: #7f1d1d;
     border-left-color: #f87171;
 }
 
 body[data-theme="dark"] .admonition.danger {
     background: linear-gradient(145deg, #3f0f0f, #2a0a0a);
-    color: #fca5a5;
     border-left-color: #ef4444;
 }
 
 p.admonition-title {
-    font-size: var(--font-size--normal);
+    font-size: 1.05em;
     font-weight: 700;
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-top: 0;
-    margin-bottom: 8px;
+    gap: 10px;
+    margin: 0 0 12px 0;
+    padding: 0;
+    line-height: 1.4;
     width: 100%;
+    flex-wrap: wrap;
 }
 
 p.admonition-title:before {
@@ -417,9 +406,18 @@ p.admonition-title:before {
     justify-content: center;
     height: 24px;
     width: 24px;
+    min-width: 24px;
     flex-shrink: 0;
     font-size: 18px;
     animation: iconFloat 2s ease-in-out infinite;
+}
+
+.admonition.note p.admonition-title {
+    color: #d97706;
+}
+
+body[data-theme="dark"] .admonition.note p.admonition-title {
+    color: #fbbf24;
 }
 
 .admonition.note p.admonition-title:before {
@@ -433,14 +431,36 @@ body[data-theme="dark"] .admonition.note p.admonition-title:before {
     color: #ff7a44;
 }
 
+.admonition.seealso p.admonition-title {
+    color: #d97706;
+}
+
+body[data-theme="dark"] .admonition.seealso p.admonition-title {
+    color: #fbbf24;
+}
+
 .admonition.seealso p.admonition-title:before {
     content: '👁️';
-    animation: iconFloat 1.8s ease-in-out infinite;
+}
+
+.admonition.tip p.admonition-title {
+    color: #059669;
+}
+
+body[data-theme="dark"] .admonition.tip p.admonition-title {
+    color: #6ee7b7;
 }
 
 .admonition.tip p.admonition-title:before {
     content: '💡';
-    animation: iconFloat 1.5s ease-in-out infinite;
+}
+
+.admonition.warning p.admonition-title {
+    color: #b45309;
+}
+
+body[data-theme="dark"] .admonition.warning p.admonition-title {
+    color: #fcd34d;
 }
 
 .admonition.warning p.admonition-title:before {
@@ -448,24 +468,64 @@ body[data-theme="dark"] .admonition.note p.admonition-title:before {
     animation: iconPulseWarning 1.5s ease-in-out infinite;
 }
 
+.admonition.danger p.admonition-title {
+    color: #991b1b;
+}
+
+body[data-theme="dark"] .admonition.danger p.admonition-title {
+    color: #fca5a5;
+}
+
 .admonition.danger p.admonition-title:before {
     content: '🔥';
-    animation: iconFloat 1.5s ease-in-out infinite;
 }
 
-.admonition-content {
-    flex: 1;
-    min-width: 0;
+.admonition > p {
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
-.admonition p {
-    margin: 4px 0 0 0;
-    line-height: 1.5;
+.admonition.note > p:not(.admonition-title) {
+    color: #7a4419;
 }
 
-.admonition p:first-of-type {
-    margin-top: 0;
-    font-weight: 500;
+body[data-theme="dark"] .admonition.note > p:not(.admonition-title) {
+    color: #d4a574;
+}
+
+.admonition.seealso > p:not(.admonition-title) {
+    color: #7a4419;
+}
+
+body[data-theme="dark"] .admonition.seealso > p:not(.admonition-title) {
+    color: #d4a574;
+}
+
+.admonition.tip > p:not(.admonition-title) {
+    color: #065f46;
+}
+
+body[data-theme="dark"] .admonition.tip > p:not(.admonition-title) {
+    color: #a7f3d0;
+}
+
+.admonition.warning > p:not(.admonition-title) {
+    color: #664d03;
+}
+
+body[data-theme="dark"] .admonition.warning > p:not(.admonition-title) {
+    color: #fde047;
+}
+
+.admonition.danger > p:not(.admonition-title) {
+    color: #7f1d1d;
+}
+
+body[data-theme="dark"] .admonition.danger > p:not(.admonition-title) {
+    color: #fecaca;
 }
 
 .admonition p code {
@@ -474,20 +534,55 @@ body[data-theme="dark"] .admonition.note p.admonition-title:before {
     border-radius: 6px;
     font-family: "Ubuntu Mono", monospace;
     font-size: 0.9em;
+    white-space: normal;
 }
 
 .admonition.note p code {
-    background: rgba(255, 153, 102, 0.2);
-    color: #d97706;
+    background: rgba(255, 153, 102, 0.25);
+    color: inherit;
 }
 
 body[data-theme="dark"] .admonition.note p code {
-    background: rgba(255, 122, 68, 0.2);
-    color: #fbbf24;
+    background: rgba(255, 122, 68, 0.25);
 }
 
-.admonition > *:last-child {
-    margin-bottom: 0;
+.admonition.tip p code {
+    background: rgba(52, 211, 153, 0.25);
+}
+
+body[data-theme="dark"] .admonition.tip p code {
+    background: rgba(16, 185, 129, 0.25);
+}
+
+.admonition.warning p code {
+    background: rgba(251, 191, 36, 0.25);
+}
+
+body[data-theme="dark"] .admonition.warning p code {
+    background: rgba(245, 158, 11, 0.25);
+}
+
+.admonition.danger p code {
+    background: rgba(248, 113, 113, 0.25);
+}
+
+body[data-theme="dark"] .admonition.danger p code {
+    background: rgba(239, 68, 68, 0.25);
+}
+
+@media (max-width: 768px) {
+    .admonition {
+        padding: 12px 14px;
+    }
+
+    p.admonition-title {
+        font-size: 1em;
+        gap: 8px;
+    }
+
+    .admonition > p {
+        font-size: 0.95em;
+    }
 }
 
 .related-pages {
