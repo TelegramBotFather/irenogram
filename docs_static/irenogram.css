@@ -76,6 +76,33 @@
     }
 }
 
+@keyframes iconBounce {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-4px) scale(1.05);
+    }
+}
+
+@keyframes iconSpin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes iconPulseGlow {
+    0%, 100% {
+        filter: drop-shadow(0 0 0px currentColor);
+    }
+    50% {
+        filter: drop-shadow(0 0 8px currentColor);
+    }
+}
+
 :root {
     --border-radius: 0.5em;
     --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
@@ -96,16 +123,30 @@ body {
     --color-background-border: #dddddd;
     --color-guilabel-background: #f3f2f1;
     --color-guilabel-border: #dddddd;
+    
     --color-admonition-title--note: #E04000;
-    --color-admonition-title-background--note: #fdeee8;
+    --color-admonition-title-background--note: #fff5ed;
+    --color-admonition-border--note: #ffb88c;
+    
     --color-admonition-title--seealso: #E04000;
-    --color-admonition-title-background--seealso: #fdeee8;
-    --color-admonition-title--tip: #006020;
-    --color-admonition-title-background--tip: #e8f8e8;
-    --color-admonition-title--warning: #c07000;
-    --color-admonition-title-background--warning: #fff3cd;
+    --color-admonition-title-background--seealso: #fff5ed;
+    --color-admonition-border--seealso: #ffb88c;
+    
+    --color-admonition-title--tip: #00a651;
+    --color-admonition-title-background--tip: #eef9f4;
+    --color-admonition-border--tip: #7edcc4;
+    
+    --color-admonition-title--warning: #d97706;
+    --color-admonition-title-background--warning: #fffbeb;
+    --color-admonition-border--warning: #fcd34d;
+    
+    --color-admonition-title--danger: #dc2626;
+    --color-admonition-title-background--danger: #fef2f2;
+    --color-admonition-border--danger: #fca5a5;
+    
     --color-admonition-title: #E04000;
-    --color-admonition-title-background: #fdeee8;
+    --color-admonition-title-background: #fff5ed;
+    --color-admonition-border: #ffb88c;
 
     --color-border: #dddddd;
     --color-button: #f3f6f6;
@@ -147,12 +188,30 @@ body[data-theme="dark"] {
     --color-table-border: #707070;
     --color-guilabel-background: #323232;
     --color-guilabel-border: #505050;
-    --color-admonition-title--note: #f07040;
-    --color-admonition-title-background--note: #2e1a10;
-    --color-admonition-title--seealso: #f07040;
-    --color-admonition-title-background--seealso: #2e1a10;
-    --color-admonition-title: #f07040;
-    --color-admonition-title-background: #2e1a10;
+    
+    --color-admonition-title--note: #ff9966;
+    --color-admonition-title-background--note: #3d2817;
+    --color-admonition-border--note: #ff7a44;
+    
+    --color-admonition-title--seealso: #ff9966;
+    --color-admonition-title-background--seealso: #3d2817;
+    --color-admonition-border--seealso: #ff7a44;
+    
+    --color-admonition-title--tip: #34d399;
+    --color-admonition-title-background--tip: #064e3b;
+    --color-admonition-border--tip: #10b981;
+    
+    --color-admonition-title--warning: #fbbf24;
+    --color-admonition-title-background--warning: #422006;
+    --color-admonition-border--warning: #f59e0b;
+    
+    --color-admonition-title--danger: #f87171;
+    --color-admonition-title-background--danger: #3f0f0f;
+    --color-admonition-border--danger: #ef4444;
+    
+    --color-admonition-title: #ff9966;
+    --color-admonition-title-background: #3d2817;
+    --color-admonition-border: #ff7a44;
 
     --color-border: #505050;
     --color-button: #303030;
@@ -229,30 +288,68 @@ p code.xref.literal {
 .admonition {
     border-radius: var(--border-radius);
     font-size: var(--font-size--normal);
-    border-left: 0;
-    background: linear-gradient(135deg, var(--color-background-highlight) 0%, var(--color-background-secondary) 100%);
+    border-left: 4px solid var(--color-admonition-border);
+    border-top: 1px solid var(--color-admonition-border);
+    border-right: 1px solid var(--color-admonition-border);
+    border-bottom: 1px solid var(--color-admonition-border);
+    background: linear-gradient(135deg, var(--color-admonition-title-background) 0%, rgba(0,0,0,0.02) 100%);
     backdrop-filter: blur(8px);
     transition: all var(--transition-normal);
     animation: fadeInUp 0.6s ease-out;
+    padding: 16px;
 }
 
 .admonition:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 12px 32px var(--color-admonition-border);
+    border-left-width: 5px;
 }
 
 p.admonition-title {
     font-size: var(--font-size--normal);
-    font-weight: bold;
+    font-weight: 700;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
+    color: var(--color-admonition-title);
+    margin-top: 0;
+    margin-bottom: 8px;
 }
 
 p.admonition-title:before {
-    height: 21px;
-    width: 21px;
-    animation: pulse 2s infinite;
+    content: '';
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+    flex-shrink: 0;
+    animation: iconBounce 2s ease-in-out infinite;
+}
+
+.admonition.note p.admonition-title:before {
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23ff9966" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>') center/contain no-repeat;
+}
+
+.admonition.seealso p.admonition-title:before {
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23ff9966" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>') center/contain no-repeat;
+}
+
+.admonition.tip p.admonition-title:before {
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%2334d399" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-4m14 6v-3.87a3.37 3.37 0 0 0-5.15-3.44L9 9"/><circle cx="9" cy="9" r="1"/></svg>') center/contain no-repeat;
+    animation: iconBounce 1.5s ease-in-out infinite;
+}
+
+.admonition.warning p.admonition-title:before {
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23fbbf24" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3.05h16.94a2 2 0 0 0 1.71-3.05L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>') center/contain no-repeat;
+    animation: iconPulseGlow 2s ease-in-out infinite;
+}
+
+.admonition.danger p.admonition-title:before {
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23f87171" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>') center/contain no-repeat;
+    animation: iconPulseGlow 1.5s ease-in-out infinite;
+}
+
+.admonition > *:last-child {
+    margin-bottom: 0;
 }
 
 .related-pages {
