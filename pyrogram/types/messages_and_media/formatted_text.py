@@ -1,4 +1,3 @@
-
 from typing import List, Optional
 
 import pyrogram
@@ -35,6 +34,9 @@ class FormattedText(Object):
         self.text = text
         self.parse_mode = parse_mode
         self.entities = entities
+
+    def __str__(self) -> str:
+        return self.text
 
     @staticmethod
     def _parse(client: "pyrogram.Client", text: "raw.types.TextWithEntities") -> "FormattedText":
