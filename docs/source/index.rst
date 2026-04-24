@@ -53,15 +53,7 @@ Welcome to Irenogram
     :hidden:
     :caption: API Reference
 
-    api/client
-    api/methods/index
-    api/types/index
-    api/bound-methods/index
-    api/enums/index
-    api/decorators/index
-    api/handlers/index
-    api/filters/index
-    api/errors/index
+    api/index
 
 .. toctree::
     :hidden:
