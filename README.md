@@ -1,88 +1,77 @@
 <p align="center">
-  <img src="docs_static/irenogram.png" alt="Irenogram" width="128"/>
+    <a href="https://github.com/abirxdhack/irenogram">
+        <img src="docs_static/irenogram.png" alt="Irenogram" width="128">
+    </a>
+    <br>
+    <b>Telegram MTProto API Framework for Python</b>
+    <br>
+    <a href="https://github.com/abirxdhack">
+        Homepage
+    </a>
+    •
+    <a href="https://abirxdhack.github.io/irenogram">
+        Documentation
+    </a>
+    •
+    <a href="https://github.com/abirxdhack/irenogram/issues">
+        Issues
+    </a>
+    •
+    <a href="https://t.me/ISmartCoder">
+        Support Chat
+    </a>
 </p>
 
-<h1 align="center">Irenogram</h1>
+## Irenogram
 
-<p align="center">
-  <b>Elegant, modern and asynchronous Telegram MTProto API framework in Python for users and bots.</b>
-</p>
+> Elegant, modern and asynchronous Telegram MTProto API framework in Python for users and bots
 
-<p align="center">
-  <a href="https://pypi.org/project/irenogram/"><img src="https://img.shields.io/pypi/v/irenogram.svg" alt="PyPI"/></a>
-  <a href="https://pypi.org/project/irenogram/"><img src="https://img.shields.io/pypi/pyversions/irenogram.svg" alt="Python"/></a>
-  <a href="https://www.gnu.org/licenses/lgpl-3.0.html"><img src="https://img.shields.io/pypi/l/irenogram.svg" alt="License"/></a>
-</p>
+```python
+from pyrogram import Client, filters
 
----
+app = Client("my_account")
 
-Irenogram is a production-ready, actively maintained Pyrogram fork — fully compatible with existing Pyrogram code. Install as `irenogram`, import as `pyrogram`. No migration needed.
+@app.on_message(filters.private)
+async def hello(client, message):
+    await message.reply("Hello from Irenogram!")
 
-## Features
+app.run()
+```
 
-- **Telegram Bot API 9.6** — Managed Bots, Poll Revolution, Mini App keyboard buttons, new entity types
-- **Layer 224** MTProto — full schema coverage, all 2,200+ TL types implemented
-- **Managed Bots** — create, control and fetch tokens for bots via API
-- **Poll Revolution** — multiple correct answers, revoting, hidden results, shuffle, dynamic options
-- **Entity Expansion** — `FORMATTED_DATE`, `DIFF_INSERT`, `DIFF_REPLACE`, `DIFF_DELETE`
-- **Todo/Checklist** — full send, append, complete/incomplete support
-- **Stable sessions** — no unknown constructor errors, fixed MTProto framing
-- **Python 3.8+** — fully async, works with `asyncio` and frameworks
+**Irenogram** is a modern, elegant and asynchronous [MTProto API](https://abirxdhack.github.io/irenogram) framework. It enables you to easily interact with the main Telegram API through a user account (custom client) or a bot identity (bot API alternative) using Python.
 
-## Installation
+### Key Features
+
+- **Ready**: Install Irenogram with pip and start building right away. Drop-in replacement for Pyrogram.
+- **Easy**: Makes the Telegram API simple and intuitive, with full type hints for IDE support.
+- **Elegant**: Low-level details abstracted, presented in convenient, Pythonic ways.
+- **Fast**: Optimized MTProto implementation with C-accelerated cryptography via TgCrypto.
+- **Type-hinted**: Complete type annotations across all 2,200+ Telegram types for excellent IDE support.
+- **Async**: Fully asynchronous (also synchronous if needed, for convenience).
+- **Powerful**: Full Telegram API access including Managed Bots, Business Accounts, Advanced Polls.
+
+### Rare & Exceptional Features
+
+- **Layer 224 Complete** — All 2,200+ MTProto types with full type coverage
+- **Managed Bots** — Create and control multiple bots via single account API
+- **Business Accounts** — Full support for Telegram Business API across all methods
+- **Advanced Polls** — Quiz mode with multiple correct answers, revoting, hidden results, dynamic options
+- **In-Memory Sessions** — Zero-disk temporary sessions for stateless deployments
+- **Session Strings** — Export/import sessions without file I/O
+- **Zero Migration** — 100% backward compatible with existing Pyrogram code
+- **Multiple Storage** — SQLite, Memory, File, MongoDB storage backends
+
+### Installing
 
 ```bash
 pip install irenogram
 ```
 
-## Quick Start
+### Resources
 
-```python
-from pyrogram import Client
+- Check out the docs at https://abirxdhack.github.io/irenogram to learn more, get started and discover advanced features.
+- Join the community at https://t.me/Irenogram for support, updates and announcements.
 
-app = Client("my_account")
+### License
 
-@app.on_message()
-async def handle(client, message):
-    await message.reply("Hello!")
-
-app.run()
-```
-
-## Bot API 9.6 Examples
-
-```python
-from pyrogram import Client
-from pyrogram.types import PollOption, KeyboardButton, RequestPeerTypeManagedBot
-
-app = Client("my_bot", bot_token="...")
-
-@app.on_managed_bot()
-async def on_new_managed_bot(client, managed_bot):
-    token = await client.get_managed_bot_token(managed_bot.bot_id)
-    print(f"New bot token: {token}")
-
-async def main():
-    async with app:
-        await app.send_poll(
-            chat_id="me",
-            question="Best language?",
-            options=[PollOption("Python"), PollOption("Go"), PollOption("Rust")],
-            allows_revoting=True,
-            hide_results_until_close=True,
-            correct_option_ids=[0],
-        )
-```
-
-## Links
-
-- **Docs**: [abirxdhack.github.io/irenogram](https://abirxdhack.github.io/irenogram)
-- **Author**: [github.com/abirxdhack](https://github.com/abirxdhack)
-- **Repository**: [github.com/abirxdhack/irenogram](https://github.com/abirxdhack/irenogram)
-- **Community**: [t.me/ISmartCoder](https://t.me/ISmartCoder)
-- **Issues**: [github.com/abirxdhack/irenogram/issues](https://github.com/abirxdhack/irenogram/issues)
-
-## License
-
-Irenogram is distributed under the terms of the
-[GNU Lesser General Public License v3 (LGPLv3)](https://www.gnu.org/licenses/lgpl-3.0.html).
+Irenogram is distributed under the terms of the [GNU Lesser General Public License v3.0](https://www.gnu.org/licenses/lgpl-3.0.html).
