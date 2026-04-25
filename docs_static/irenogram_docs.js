@@ -462,35 +462,22 @@
         const article = document.querySelector('article[role="main"]');
         if (!article) return;
 
-        const allElements = article.querySelectorAll('dl dt, dl dd, p, div');
-        const contentCache = {};
+        const dts = article.querySelectorAll('dl dt');
+        const dds = article.querySelectorAll('dl dd');
         
-        allElements.forEach(el => {
-            const text = el.textContent.trim();
-            
-            if (text && text.length > 5) {
-                const hash = text.substring(0, 100);
-                
-                if (el.tagName === 'DT') {
-                    if (text.includes('=') && text.includes('<class')) {
-                        const nameMatch = text.match(/^([A-Z_]+)\s*=/);
-                        if (nameMatch) {
-                            el.textContent = nameMatch[1];
-                        }
-                    }
-                } else if (el.tagName === 'DD' || el.tagName === 'P') {
-                    if (contentCache[hash] && el.tagName !== 'DT') {
-                        el.style.display = 'none';
-                    } else if (!text.includes('class ') && !text.includes('Bases:') && !text.includes('pyrogram.raw')) {
-                        contentCache[hash] = true;
-                    }
+        dts.forEach((dt, idx) => {
+            const text = dt.textContent.trim();
+            if (text.includes('=') && text.includes('<class')) {
+                const nameMatch = text.match(/^([A-Z_]+)\s*=/);
+                if (nameMatch) {
+                    dt.textContent = nameMatch[1];
                 }
             }
         });
 
         const docinfos = article.querySelectorAll('div.docinfo, .field-list');
         docinfos.forEach(el => {
-            if (el.textContent.includes('class pyrogram')) {
+            if (el.textContent.includes('pyrogram.raw')) {
                 el.style.display = 'none';
             }
         });
