@@ -49,7 +49,6 @@ autosummary_generate = True
 autodoc_typehints = "none"
 
 autodoc_default_options = {
-    "members": False,
     "undoc-members": False,
     "show-inheritance": True,
     "member-order": "bysource",
