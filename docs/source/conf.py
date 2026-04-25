@@ -54,6 +54,7 @@ autodoc_default_options = {
     "show-inheritance": True,
     "member-order": "bysource",
     "no-index": False,
+    "no-value": True,
 }
 
 autodoc_inherit_docstrings = True
