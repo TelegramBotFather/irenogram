@@ -47,7 +47,6 @@ BOUND_METHODS = {
     "unpin", "unpin_all_messages",
 }
 
-page_template = ""
 toctree = ""
 
 
@@ -150,27 +149,18 @@ def generate(source_path, base):
                         ".".join(full_path.split("/")[:-1]) + "." + node_info.name
                     )
 
-                    if node_info.type == "class":
-                        directive_type = "autoclass"
-                        directive_suffix = "()"
-                        directive_option = "members"
-                    elif node_info.type == "union":
-                        directive_type = "autodata"
-                        directive_suffix = ""
-                        directive_option = "annotation"
-                    else:
-                        raise ValueError(f"Unknown node type: `{node_info.type}`")
+                    f.write(full_name + "\n")
+                    f.write(title_markup + "\n\n")
 
-                    f.write(
-                        page_template.format(
-                            title=full_name,
-                            title_markup=title_markup,
-                            directive_type=directive_type,
-                            full_class_path=full_class_path,
-                            directive_suffix=directive_suffix,
-                            directive_option=directive_option,
-                        )
-                    )
+                    if node_info.type == "class":
+                        f.write(".. autoclass:: {}()\n".format(full_class_path))
+                    elif node_info.type == "union":
+                        f.write(".. autodata:: {}\n".format(full_class_path))
+                        f.write("    :annotation:\n")
+                    else:
+                        raise ValueError("Unknown node type: `{}`".format(node_info.type))
+
+                    f.write("\n")
 
                 if last not in all_entities:
                     all_entities[last] = []
@@ -267,7 +257,8 @@ def _discover_methods(methods_root):
         "phone", "premium", "pyromod", "stickers", "stories", "users", "utilities",
     ]
     all_subdirs = sorted(os.listdir(methods_root))
-    ordered = [s for s in subdir_order if s in all_subdirs] +               [s for s in all_subdirs if s not in subdir_order]
+    ordered = [s for s in subdir_order if s in all_subdirs] + \
+              [s for s in all_subdirs if s not in subdir_order]
     for subdir in ordered:
         subdir_path = os.path.join(methods_root, subdir)
         if not os.path.isdir(subdir_path) or subdir.startswith("__") or subdir == "decorators":
@@ -748,13 +739,9 @@ def pyrogram_api():
 
 
 def start():
-    global page_template
     global toctree
 
     shutil.rmtree(DESTINATION, ignore_errors=True)
-
-    with open(HOME + "/template/page.txt", encoding="utf-8") as f:
-        page_template = f.read()
 
     with open(HOME + "/template/toctree.txt", encoding="utf-8") as f:
         toctree = f.read()
