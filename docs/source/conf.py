@@ -170,9 +170,12 @@ def skip_member(app, what, name, obj, skip, options):
         "__subclasshook__", "__weakref__", "__annotations__", "__abstractmethods__",
     }
     SKIP_INTERNALS = {"read", "write", "default"}
+    SKIP_CLASS_ATTRS = {"ID", "QUALNAME"}
     if name in SKIP_DUNDERS:
         return True
     if name in SKIP_INTERNALS:
+        return True
+    if name in SKIP_CLASS_ATTRS:
         return True
     if name.endswith("_filter"):
         return True
