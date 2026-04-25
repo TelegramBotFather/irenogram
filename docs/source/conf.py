@@ -49,7 +49,7 @@ autosummary_generate = True
 autodoc_typehints = "none"
 
 autodoc_default_options = {
-    "members": True,
+    "members": False,
     "undoc-members": False,
     "show-inheritance": True,
     "member-order": "bysource",
@@ -168,9 +168,11 @@ def skip_member(app, what, name, obj, skip, options):
         "__module__", "__ne__", "__new__", "__reduce__", "__reduce_ex__",
         "__repr__", "__setattr__", "__setstate__", "__sizeof__", "__str__",
         "__subclasshook__", "__weakref__", "__annotations__", "__abstractmethods__",
+        "__slots__",
     }
     SKIP_INTERNALS = {"read", "write", "default"}
     SKIP_CLASS_ATTRS = {"ID", "QUALNAME"}
+
     if name in SKIP_DUNDERS:
         return True
     if name in SKIP_INTERNALS:
