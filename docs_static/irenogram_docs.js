@@ -462,40 +462,36 @@
         const article = document.querySelector('article[role="main"]');
         if (!article) return;
 
-        const allText = article.innerText;
-        const seen = {};
-        const allElements = article.querySelectorAll('p, dt, dd, li');
+        const allElements = article.querySelectorAll('dl dt, dl dd, p, div');
+        const contentCache = {};
         
         allElements.forEach(el => {
-            if (el.children.length === 0) {
-                const text = el.textContent.trim();
-                const key = text.substring(0, 50);
+            const text = el.textContent.trim();
+            
+            if (text && text.length > 5) {
+                const hash = text.substring(0, 100);
                 
-                if (text && text.length > 50 && !text.includes('class ') && !text.includes('Bases:')) {
-                    if (seen[key] && el.tagName !== 'DT') {
+                if (el.tagName === 'DT') {
+                    if (text.includes('=') && text.includes('<class')) {
+                        const nameMatch = text.match(/^([A-Z_]+)\s*=/);
+                        if (nameMatch) {
+                            el.textContent = nameMatch[1];
+                        }
+                    }
+                } else if (el.tagName === 'DD' || el.tagName === 'P') {
+                    if (contentCache[hash] && el.tagName !== 'DT') {
                         el.style.display = 'none';
-                    } else {
-                        seen[key] = true;
+                    } else if (!text.includes('class ') && !text.includes('Bases:') && !text.includes('pyrogram.raw')) {
+                        contentCache[hash] = true;
                     }
                 }
             }
         });
 
-        const dts = article.querySelectorAll('dt');
-        dts.forEach(dt => {
-            const content = dt.textContent.trim();
-            if (content.match(/^[A-Z_]+ = <class/)) {
-                const nameMatch = content.match(/^([A-Z_]+)\s*=/);
-                if (nameMatch) {
-                    const codeEl = dt.querySelector('code');
-                    if (codeEl) {
-                        dt.innerHTML = '';
-                        const newCode = document.createElement('code');
-                        newCode.className = 'descname';
-                        newCode.textContent = nameMatch[1];
-                        dt.appendChild(newCode);
-                    }
-                }
+        const docinfos = article.querySelectorAll('div.docinfo, .field-list');
+        docinfos.forEach(el => {
+            if (el.textContent.includes('class pyrogram')) {
+                el.style.display = 'none';
             }
         });
     }
